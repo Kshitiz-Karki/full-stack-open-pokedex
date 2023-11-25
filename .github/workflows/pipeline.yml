@@ -39,14 +39,19 @@ jobs:
               if: ${{ github.event_name == 'push' && !contains(join(toJson(github.event.commits.*.message)), '#skip') }}
               run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
 
-            - name: Test Success
-              if: ${{ success() }}
+            - name: discord notification
+              if: ${{ success() && github.event_name == 'push' }}
               uses: rjstone/discord-webhook-notify@v1
               with:
                   severity: info
-                  details: Test succeeded.
+                  username: Github
+                  # color: '#ff00aa'
+                  avatarUrl: https://github.githubassets.com/images/modules/logos_page/Octocat.png
+                  # description: This is a custom description.
+                  details: 'Custom details: Somebody set up us the bomb.'
+                  # footer: This is a footer.
+                  text: A new version of Poxedox deployed
                   webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-
     tag_release:
         needs: [simple_deployment_pipeline]
         if: ${{ github.event_name == 'push' && !contains(join(toJson(github.event.commits.*.message)), '#skip') }}
