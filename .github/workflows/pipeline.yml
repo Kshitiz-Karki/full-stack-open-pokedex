@@ -56,29 +56,29 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   DEFAULT_BUMP: patch
-    
+
     notification:
         runs-on: ubuntu-20.04
         steps:
             - uses: actions/checkout@v3
             - name: Test Info
-                uses: rjstone/discord-webhook-notify@v1
-                with:
-                    severity: info
-                    details: Test succeeded.
-                    webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+              uses: rjstone/discord-webhook-notify@v1
+              with:
+                  severity: info
+                  details: Test succeeded.
+                  webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
             - name: Test Warn
-                uses: rjstone/discord-webhook-notify@v1
-                with:
-                    severity: warn
-                    details: Test warning.
-                    webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+              uses: rjstone/discord-webhook-notify@v1
+              with:
+                  severity: warn
+                  details: Test warning.
+                  webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
             - name: Test Error
-                uses: rjstone/discord-webhook-notify@v1
-                with:
-                    severity: error
-                    details: Test error.
-                    webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+              uses: rjstone/discord-webhook-notify@v1
+              with:
+                  severity: error
+                  details: Test error.
+                  webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
 
     # a_test_job:
     #     runs-on: ubuntu-20.04
