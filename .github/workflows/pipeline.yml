@@ -38,6 +38,14 @@ jobs:
             - name: Trigger deployment
               if: ${{ github.event_name == 'push' && !contains(join(toJson(github.event.commits.*.message)), '#skip') }}
               run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
+              
+             - name: Test Success
+              if: ${{ success() }}
+              uses: rjstone/discord-webhook-notify@v1
+              with:
+                  severity: info
+                  details: Test succeeded.
+                  webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
 
     tag_release:
         needs: [simple_deployment_pipeline]
@@ -57,24 +65,18 @@ jobs:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   DEFAULT_BUMP: patch
 
-    notification:
-        runs-on: ubuntu-20.04
-        steps:
-            - uses: actions/checkout@v3
-            - name: Test Success
-              if: ${{ success() }}
-              uses: rjstone/discord-webhook-notify@v1
-              with:
-                  severity: info
-                  details: Test succeeded.
-                  webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-            - name: Test Error
-              if: ${{ failure() }}
-              uses: rjstone/discord-webhook-notify@v1
-              with:
-                  severity: error
-                  details: Test error.
-                  webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+    # notification:
+    #     runs-on: ubuntu-20.04
+    #     steps:
+    #         - uses: actions/checkout@v3
+           
+    #         - name: Test Error
+    #           if: ${{ failure() }}
+    #           uses: rjstone/discord-webhook-notify@v1
+    #           with:
+    #               severity: error
+    #               details: Test error.
+    #               webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
 
     # a_test_job:
     #     runs-on: ubuntu-20.04
