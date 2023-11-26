@@ -53,13 +53,6 @@ jobs:
                   text: A new version of Poxedox deployed
                   webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
 
-            - name: health check
-              if: ${{ success() && github.event_name == 'push' }}
-              uses: jtalk/url-health-check-action@v3
-              with:
-                  # Check the following URLs one by one sequentially
-                  url: https://pokedex-lywb.onrender.com/health
-
             - name: error notification
               if: ${{ failure() }}
               uses: rjstone/discord-webhook-notify@v1
